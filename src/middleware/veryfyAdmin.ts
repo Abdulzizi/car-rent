@@ -8,7 +8,11 @@ const verifyAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
         // Membaca data token yang dikirim
         const token = header?.split(" ")[1] || ""; // Mengambil token setelah 'Bearer'
-        const secretKey = "ABISHEK";
+        const secretKey = process.env.SECRET_KEY;
+
+        if (!secretKey) {
+            throw new Error('Secret key is not defined in environment variables.');
+        }
 
         // Proses verifikasi token
         verify(token, secretKey, (err) => {
